@@ -1,0 +1,67 @@
+/* src/pages/Notifications.css */
+.notifications-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.notifications-header {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notification-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: flex-start;
+    transition: transform 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.notification-item.unread {
+    background-color: #f0f9ff;
+    border-left-color: #3b82f6;
+}
+
+.notification-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    color: #3b82f6;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-message {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #1f2937;
+}
+
+.notification-date {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 2rem;
+}
