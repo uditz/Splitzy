@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,22 +42,17 @@ public class UserService {
     }
 
     public User findUserById(Long id) {
-        User user = new User();
-        List<User> users = userRepository.findAll();
-        for (User u : users) {
-            if (u.getId().equals(id)) {
-                user = u;
-                break;
-            }
-        }
-        return user;
-
+        if (id == null)
+            return null;
+        return userRepository.findById(id).orElse(null);
     }
 
+    @Cacheable(value = "users", key = "#username")
     public User findByUsername(String username) {
         return userRepository.findByName(username); // assuming returns Optional<User>
     }
 
+    @Cacheable(value = "userIds", key = "#username")
     public Optional<Long> findUserIdByUsername(String username) {
         User user = userRepository.findByName(username);
         return user != null ? Optional.of(user.getId()) : Optional.empty();
@@ -75,6 +72,7 @@ public class UserService {
         }
     }
 
+    @CacheEvict(value = { "users", "userIds" }, key = "#username")
     public void updateUser(String username, UserResponseDTO dto, String imageUrl) {
         User existingUser = findByUsername(username);
 
@@ -89,21 +87,22 @@ public class UserService {
         userRepository.save(existingUser);
 
     }
-    public void changePassword(String username,String password,
-                                String confirmPassword ,String currentPassword){
-            User user= findByUsername(username);
-            if(user==null){
-                throw new RuntimeException("User not found");
-            }
-            if(!passwordEncoder.matches(currentPassword,user.getPassword())){
-                throw new RuntimeException("Current password is incorrect");
-            }
-            if(!password.equals(confirmPassword)){
-                throw new RuntimeException("Passwords do not match");
-            }
-            user.setPassword(passwordEncoder.encode(password));
-            userRepository.save(user);
-                    
+
+    @CacheEvict(value = { "users", "userIds" }, key = "#username")
+    public void changePassword(String username, String password,
+            String confirmPassword, String currentPassword) {
+        User user = findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+        if (!password.equals(confirmPassword)) {
+            throw new RuntimeException("Passwords do not match");
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
 
     }
 }

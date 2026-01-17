@@ -17,7 +17,7 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"), indexes = @Index(name = "idx_user_name", columnList = "name"))
 public class User {
 
     @Id
@@ -29,7 +29,7 @@ public class User {
 
     private String name;
 
-    private String bio ;
+    private String bio;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -38,11 +38,11 @@ public class User {
 
     // Correct: Friendship refers to User, not the other way
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Set<Friendship> sentRequests = new HashSet<>();
 
     @OneToMany(mappedBy = "accepter", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Set<Friendship> receivedRequests = new HashSet<>();
 
     // Remove this wrong @JoinTable block — DELETE IT
@@ -50,10 +50,5 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>(List.of("USER"));
-
-
-
-
-
 
 }

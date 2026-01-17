@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 import com.example.ExpenseTracker.entity.Notification;
 import com.example.ExpenseTracker.repository.NotificationRepo;
 import static java.util.stream.Collectors.toList;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class FriendService {
@@ -31,6 +33,7 @@ public class FriendService {
     @Autowired
     NotificationRepo notificationRepo;
 
+    @CacheEvict(value = "friendRequests", key = "#accepterName")
     public void sendingFriendRequest(String requesterName, String accepterName) {
         User requester = userService.findByUsername(requesterName);
         User accepter = userService.findByUsername(accepterName);
@@ -49,6 +52,7 @@ public class FriendService {
         notificationRepo.save(notification);
     }
 
+    @Cacheable(value = "friends", key = "#username")
     public List<User> showAllFriends(String username) {
         User currentUser = userService.findByUsername(username);
         Set<User> friends = new HashSet<>();
@@ -64,6 +68,7 @@ public class FriendService {
         return new ArrayList<>(friends);
     }
 
+    @Cacheable(value = "friendRequests", key = "#username")
     public List<User> showRequestSendToMe(String username) {
         Long userId = userService.findUserIdByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -74,6 +79,7 @@ public class FriendService {
                 .toList();
     }
 
+    @CacheEvict(value = { "friends", "friendRequests" }, allEntries = true)
     public void acceptRequest(String reqReceiver, Long reqSender) {
         Long userId = userService.findUserIdByUsername(reqReceiver)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -88,6 +94,7 @@ public class FriendService {
         }
     }
 
+    @CacheEvict(value = "friendRequests", key = "#reqReceiver")
     public void rejectRequest(String reqReceiver, Long reqSender) {
         Long userId = userService.findUserIdByUsername(reqReceiver)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -104,6 +111,7 @@ public class FriendService {
         }
     }
 
+    @CacheEvict(value = "friends", allEntries = true)
     public void removeFriend(String username, Long removerId) {
         Long userId = userService.findUserIdByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
