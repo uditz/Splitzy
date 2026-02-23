@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   requestCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,

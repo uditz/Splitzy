@@ -9,8 +9,8 @@ export const DEFAULT_PROFILE_IMAGE = 'https://res.cloudinary.com/dmnqdiee9/image
 
 // Color scheme
 export const COLORS = {
-  primary: '#8b5cf6', // Violet
-  secondary: '#6366f1',
+  primary: '#27272a', // Zinc 800 (Dark grey for buttons)
+  secondary: '#3f3f46', // Zinc 700
   success: '#10b981',
   danger: '#ef4444',
   warning: '#f59e0b',

@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: 8,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: COLORS.border,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     alignItems: 'center',
   },
   typeButtonActive: {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: COLORS.border,

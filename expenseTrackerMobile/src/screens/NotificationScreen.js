@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         padding: 16,
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.card,
         borderBottomWidth: 1,
         borderBottomColor: COLORS.border,
         alignItems: 'center'

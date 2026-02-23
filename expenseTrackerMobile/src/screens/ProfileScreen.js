@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   header: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     alignItems: 'center',
     padding: 30,
     borderBottomWidth: 1,
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginTop: 20,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     paddingVertical: 8,
   },
   sectionTitle: {
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,

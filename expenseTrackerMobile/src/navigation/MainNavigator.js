@@ -25,7 +25,7 @@ const ExpenseStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: COLORS.primary },
+        headerStyle: { backgroundColor: COLORS.card },
         headerTintColor: COLORS.white,
         headerTitleStyle: { fontWeight: 'bold' },
       }}
@@ -59,7 +59,7 @@ const ChatStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: COLORS.primary },
+        headerStyle: { backgroundColor: COLORS.card },
         headerTintColor: COLORS.white,
         headerTitleStyle: { fontWeight: 'bold' },
       }}
@@ -98,12 +98,16 @@ const MainTabNavigator = () => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: COLORS.primary,
+        tabBarActiveTintColor: COLORS.text,
         tabBarInactiveTintColor: COLORS.gray,
-        headerStyle: {
-          backgroundColor: COLORS.primary,
+        tabBarStyle: {
+          backgroundColor: COLORS.card,
+          borderTopColor: COLORS.border,
         },
-        headerTintColor: COLORS.white,
+        headerStyle: {
+          backgroundColor: COLORS.card,
+        },
+        headerTintColor: COLORS.text,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -161,7 +165,7 @@ const MainNavigator = () => {
         component={NotificationScreen}
         options={{ 
           title: 'Notifications',
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.card },
           headerTintColor: COLORS.white,
         }}
       />

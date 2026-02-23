@@ -1,8 +1,44 @@
 version: '3.8'
 services:
+  db:
+    image: postgres:15
+    container_name: expense_tracker_db
+    environment:
+      POSTGRES_DB: expenseTracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   redis:
     image: redis:latest
     container_name: expense_tracker_redis
     ports:
       - "6379:6379"
     restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: expense-tracker-backend:latest
+    container_name: expense_tracker_backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/expenseTracker
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: "6379"
+      JVM_OPTS: "-Xms256m -Xmx512m"
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+
+volumes:
+  db_data:

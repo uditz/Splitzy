@@ -11,9 +11,9 @@ const AuthNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.card,
         },
-        headerTintColor: COLORS.white,
+        headerTintColor: COLORS.text,
         headerTitleStyle: {
           fontWeight: 'bold',
         },

@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   expenseCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,

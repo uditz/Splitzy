@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   participantCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 12,
     padding: 16,
     shadowColor: '#000',
