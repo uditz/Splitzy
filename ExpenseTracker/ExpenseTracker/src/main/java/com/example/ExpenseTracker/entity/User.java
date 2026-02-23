@@ -49,6 +49,7 @@ public class User {
     // @OneToMany + @JoinTable with Friend is wrong!
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<String> roles = new HashSet<>(List.of("USER"));
 
 }

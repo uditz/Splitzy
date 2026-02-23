@@ -1,12 +1,5 @@
 package com.example.ExpenseTracker.controllers;
 
-import com.example.ExpenseTracker.DTOs.UserRequestDTO;
-import com.example.ExpenseTracker.entity.User;
-import com.example.ExpenseTracker.security.JwtResponse;
-import com.example.ExpenseTracker.security.JwtUtil;
-import com.example.ExpenseTracker.services.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,14 +8,25 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.ExpenseTracker.DTOs.UserRequestDTO;
 import com.example.ExpenseTracker.DTOs.UserResponseDTO;
+import com.example.ExpenseTracker.entity.User;
+import com.example.ExpenseTracker.security.JwtResponse;
+import com.example.ExpenseTracker.security.JwtUtil;
+import com.example.ExpenseTracker.services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/public")
@@ -92,7 +96,7 @@ public class PublicUserController {
 
         userService.createNewUser(user);
 
-        userService.createNewUser(user);
+        // userService.createNewUser(user);
 
         // Return the created user details (excluding sensitive info if DTO used, but
         // here simpler)
@@ -109,9 +113,9 @@ public class PublicUserController {
         try {
             // Step 1: Authenticate the user with the credentials (username, password)
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            dto.getName(),
-                            dto.getPassword()));
+        new UsernamePasswordAuthenticationToken(
+                dto.getEmail(),
+                dto.getPassword()));
 
             // Step 2: If authentication is successful, generate a JWT token
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -119,13 +123,13 @@ public class PublicUserController {
 
             // Fetch full User details
             // Assuming you have a UserRepository or UserService to find by name/email
-            User user = userService.findByUsername(dto.getName()); // You might need to add this method to Service if
+            User user = userService.findByEmail(dto.getEmail()); // You might need to add this method to Service if
                                                                    // not exists, or Repository
 
             // Step 3: Return the JWT token AND user details
             return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getName(), user.getImageUrl()));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password"+e.getMessage());
         }
     }
 }

@@ -1,20 +1,19 @@
 package com.example.ExpenseTracker.services;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.example.ExpenseTracker.DTOs.UserResponseDTO;
-import com.example.ExpenseTracker.entity.User;
-import com.example.ExpenseTracker.repository.UserRepository;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.example.ExpenseTracker.DTOs.UserResponseDTO;
+import com.example.ExpenseTracker.entity.User;
+import com.example.ExpenseTracker.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -47,14 +46,16 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    @Cacheable(value = "users", key = "#username")
     public User findByUsername(String username) {
-        return userRepository.findByName(username); // assuming returns Optional<User>
+        User user = userRepository.findByName(username);
+        if (user == null) {
+            user = userRepository.findByEmail(username).orElse(null);
+        }
+        return user;
     }
 
-    @Cacheable(value = "userIds", key = "#username")
     public Optional<Long> findUserIdByUsername(String username) {
-        User user = userRepository.findByName(username);
+        User user = findByUsername(username);
         return user != null ? Optional.of(user.getId()) : Optional.empty();
     }
     // Optional: update, delete, etc.
@@ -72,7 +73,6 @@ public class UserService {
         }
     }
 
-    @CacheEvict(value = { "users", "userIds" }, key = "#username")
     public void updateUser(String username, UserResponseDTO dto, String imageUrl) {
         User existingUser = findByUsername(username);
 
@@ -88,7 +88,6 @@ public class UserService {
 
     }
 
-    @CacheEvict(value = { "users", "userIds" }, key = "#username")
     public void changePassword(String username, String password,
             String confirmPassword, String currentPassword) {
         User user = findByUsername(username);
@@ -104,5 +103,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
 
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

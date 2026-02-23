@@ -100,9 +100,9 @@ api.interceptors.response.use(
 // Auth API
 export const authAPI = {
   login: (credentials) => {
-    console.log('Login API call with:', { name: credentials.name });
-    return api.post('/public/login', credentials);
-  },
+  console.log('Login API call with:', { email: credentials.email });
+  return api.post('/public/login', credentials); // ensure it contains { email, password }
+},
   register: (formData) => {
     console.log('Register API call');
     return api.post('/public/register', formData, {

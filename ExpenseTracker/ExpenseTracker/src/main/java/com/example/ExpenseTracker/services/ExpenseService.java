@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import com.example.ExpenseTracker.entity.Notification;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class ExpenseService {
@@ -36,7 +34,6 @@ public class ExpenseService {
     @Autowired
     NotificationRepo notificationRepo;
 
-    @CacheEvict(value = "expenses", key = "#userId")
     public boolean addExpense(String username, ExpenseCreationDto reqDto) {
 
         Long userId = userService.findUserIdByUsername(username)
@@ -90,7 +87,6 @@ public class ExpenseService {
         return expenseRepository.findAll();
     }
 
-    @Cacheable(value = "expenses", key = "#targetId")
     public List<Expense> getExpensesByUserId(Long targetId) {
         if (userService.findUserById(targetId) == null) {
             return new ArrayList<Expense>();
@@ -99,7 +95,6 @@ public class ExpenseService {
 
     }
 
-    @CacheEvict(value = "expenses", allEntries = true)
     public ExpenseParticipant setingPaidExpense(String ownername, Long receiverId, Long expenseId) {
         Long ownerId = userService.findUserIdByUsername(ownername)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -126,7 +121,6 @@ public class ExpenseService {
 
     }
 
-    @CacheEvict(value = "expenses", allEntries = true)
     public void deleteExpense(Long expenseId) {
         expenseRepository.delete(expenseRepository.findById(expenseId).get());
     }

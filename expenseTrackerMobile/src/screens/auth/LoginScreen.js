@@ -15,7 +15,7 @@ import { useAuth } from '../../context/AuthContext';
 import { COLORS } from '../../config/constants';
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -23,7 +23,7 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     console.log('Login button pressed');
     
-    if (!username.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
       console.log('Calling login function...');
-      const result = await login(username.trim(), password);
+      const result = await login({ email: email.trim(), password });
       console.log('Login result:', result);
       
       if (!result.success) {
@@ -62,12 +62,12 @@ const LoginScreen = ({ navigation }) => {
           {/* Login Form */}
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Username</Text>
+              <Text style={styles.label}>Email</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your username"
-                value={username}
-                onChangeText={setUsername}
+                placeholder="Enter your email"
+                value={email}
+                onChangeText={setEmail}
                 autoCapitalize="none"
                 autoCorrect={false}
                 editable={!loading}

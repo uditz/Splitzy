@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
   },
   theirMessageBubble: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderBottomLeftRadius: 4,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     padding: 12,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
   },

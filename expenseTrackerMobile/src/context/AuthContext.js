@@ -73,10 +73,10 @@ export const AuthProvider = ({ children }) => {
     setAuthCleanup(logout);
   }, [logout]);
 
-  const login = async (username, password) => {
+  const login = async ({ email, password }) => {
     try {
-      console.log('Attempting login for:', username);
-      const response = await authAPI.login({ name: username, password });
+      console.log('Attempting login for:', email);
+      const response = await authAPI.login({ email, password });
       console.log('Login response received:', response.data);
       
       // Backend returns: { token, userId, username, imageUrl }

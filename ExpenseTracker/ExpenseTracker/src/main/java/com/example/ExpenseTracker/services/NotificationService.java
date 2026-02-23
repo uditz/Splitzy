@@ -7,8 +7,6 @@ import com.example.ExpenseTracker.repository.NotificationRepo;
 import java.util.List;
 import com.example.ExpenseTracker.entity.Notification;
 import java.util.ArrayList;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class NotificationService {
@@ -18,19 +16,16 @@ public class NotificationService {
     @Autowired
     UserService userService;
 
-    @CacheEvict(value = "notifications", allEntries = true)
     public void saveNotification(Notification notification) {
         notificationRepo.save(notification);
     }
 
-    @Cacheable(value = "notifications", key = "#username")
     public List<Notification> getAllNotificationsByid(String username) {
         User user = userService.findByUsername(username);
         return notificationRepo.findByUserId(user.getId());
 
     }
 
-    @CacheEvict(value = "notifications", key = "#username")
     public void markNotificationAsRead(String username) {
         User user = userService.findByUsername(username);
         List<Notification> notifications = notificationRepo.findByUserId(user.getId());
@@ -40,7 +35,6 @@ public class NotificationService {
         }
     }
 
-    @Cacheable(value = "unreadNotifications", key = "#username")
     public List<Notification> getUnreadNotifications(String username) {
         User user = userService.findByUsername(username);
         List<Notification> notifications = notificationRepo.findByUserId(user.getId());

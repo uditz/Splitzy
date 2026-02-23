@@ -142,12 +142,23 @@ const FriendsListScreen = ({ navigation, route }) => {
         <Text style={styles.friendEmail}>{item.email}</Text>
         {item.bio && <Text style={styles.friendBio}>{item.bio}</Text>}
       </View>
-      <TouchableOpacity
-        style={styles.removeButton}
-        onPress={() => handleRemoveFriend(item.id)}
-      >
-        <Ionicons name="trash-outline" size={20} color={COLORS.danger} />
-      </TouchableOpacity>
+      <View style={styles.actionButtons}>
+        <TouchableOpacity
+          style={styles.messageButton}
+          onPress={() => navigation.navigate('Messages', {
+            screen: 'Chat',
+            params: { friendId: item.id, friendName: item.name, friendImage: item.imageUrl }
+          })}
+        >
+          <Ionicons name="chatbubble-ellipses-outline" size={20} color={COLORS.primary} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.removeButton}
+          onPress={() => handleRemoveFriend(item.id)}
+        >
+          <Ionicons name="trash-outline" size={20} color={COLORS.danger} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -249,6 +260,7 @@ const FriendsListScreen = ({ navigation, route }) => {
           <TextInput
             style={styles.searchInput}
             placeholder="Search by name or email"
+            placeholderTextColor={COLORS.textSecondary}
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={handleSearch}
@@ -316,7 +328,7 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
   },
@@ -344,12 +356,13 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
+    color: COLORS.text,
   },
   searchButton: {
     backgroundColor: COLORS.primary,
@@ -370,7 +383,7 @@ const styles = StyleSheet.create({
   friendCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -383,7 +396,7 @@ const styles = StyleSheet.create({
   requestCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -396,7 +409,7 @@ const styles = StyleSheet.create({
   searchCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -435,6 +448,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textSecondary,
     marginTop: 4,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  messageButton: {
+    padding: 8,
+    marginRight: 4,
   },
   removeButton: {
     padding: 8,

@@ -14,29 +14,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-//user detail ki interface spring security k pass pehle se rehta h hame usko implement karke
-//apna username or password dena hota h or UserDetail ka object return karna hota h
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepo;
-    @Autowired
-    UserService userService;
-
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByUsername(username);
-        if(user==null){
-            throw new UsernameNotFoundException("user not found");
-        }
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        // Load by EMAIL (not name)
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))  // Spring Security expects "ROLE_" prefix
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getName(),
+                user.getEmail(),   // principal should be email
                 user.getPassword(),
                 authorities
         );

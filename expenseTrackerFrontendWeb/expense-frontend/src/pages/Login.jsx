@@ -6,7 +6,7 @@ import { AuthContext } from '../App';
 import './Auth.css';
 
 function Login() {
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { setToken } = useContext(AuthContext);
@@ -15,7 +15,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/public/login', { name, password });
+      const response = await api.post('/public/login', { email, password });
       
       const { token, userId, username, imageUrl } = response.data;
       
@@ -38,9 +38,9 @@ function Login() {
           <div className="form-group">
             <input 
               type="text" 
-              placeholder="Username" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
+              placeholder="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
               required
             />
           </div>

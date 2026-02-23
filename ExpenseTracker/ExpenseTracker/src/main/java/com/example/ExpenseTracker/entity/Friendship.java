@@ -1,6 +1,8 @@
 package com.example.ExpenseTracker.entity;
 
 import com.example.ExpenseTracker.Enums.FriendshipStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,10 +28,12 @@ public class Friendship {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "requester_id", nullable = false)
+    @JsonIgnore
     private User requester;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "accepter_id", nullable = false)
+    @JsonIgnore
     private User accepter;
 
     @Enumerated(EnumType.STRING)
